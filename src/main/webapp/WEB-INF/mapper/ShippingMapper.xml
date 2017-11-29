@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mmall.dao.ShippingDao">
+
+    <sql id="baseColumn">
+        id,user_id,receiver_name,receiver_phone,receiver_mobile,receiver_province,receiver_city,receiver_district,
+        receiver_address,receiver_zip,create_time,update_time
+    </sql>
+
+    <!--useGeneratedKeys,keyProperty可以将自动增长的字段添加到对象里-->
+    <insert id="insert" parameterType="Shipping" useGeneratedKeys="true" keyProperty="id">
+        insert into mmall_shipping(user_id,receiver_name,receiver_phone,receiver_mobile,receiver_province,receiver_city,
+        receiver_district,receiver_address,receiver_zip,create_time,update_time) values (#{userId},#{receiverName},#{receiverPhone},
+        #{receiverMobile},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{receiverZip},now(),now())
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from mmall_shipping where id=#{value};
+    </delete>
+
+    <update id="update" parameterType="Shipping">
+        update mmall_shipping
+        <set>
+            <if test="receiverName!=null">
+                receiver_name = #{receiverName},
+            </if>
+            <if test="receiverPhone!=null">
+                receiver_phone = #{receiverPhone},
+            </if>
+            <if test="receiverMobile!=null">
+                receiver_mobile = #{receiverMobile},
+            </if>
+            <if test="receiverProvince!=null">
+                receiver_province = #{receiverProvince},
+            </if>
+            <if test="receiverCity!=null">
+                receiver_city = #{receiverCity},
+            </if>
+            <if test="receiverDistrict!=null">
+                receiver_district = #{receiverDistrict},
+            </if>
+            <if test="receiverAddress!=null">
+                receiver_address = #{receiverAddress},
+            </if>
+            <if test="receiverZip!=null">
+                receiver_zip = #{receiverZip},
+            </if>
+            <if test="createTime!=null">
+                create_time = #{createTime},
+            </if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="selectById" parameterType="java.lang.Integer" resultType="Shipping">
+        select <include refid="baseColumn"/>
+        from mmall_shipping where id = #{id}
+    </select>
+
+    <select id="selectShipping" resultType="Shipping">
+        select <include refid="baseColumn"/>
+        from mmall_shipping
+    </select>
+
+    <select id="selectShippingById" resultType="Shipping">
+        select <include refid="baseColumn"/>
+        from mmall_shipping where user_id = #{userId}
+    </select>
+
+
+</mapper>

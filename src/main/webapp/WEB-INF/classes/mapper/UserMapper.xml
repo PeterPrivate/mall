@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmall.dao.UserDao">
+
+    <select id="findUser" resultType="User">    /*登录*/
+        SELECT
+        <include refid="baseColumn"/>
+        FROM mmall_user WHERE username=#{username} AND password=#{password}
+    </select>
+
+    <insert id="saveOne">    /*注册*/
+        INSERT INTO mmall_user(username,password,email,phone,question,answer,role,create_time,update_time) VALUES (#{username},#{password},#{email},#{phone},#{question},#{answer},0,now(),now())
+    </insert>
+
+    <select id="findUserByUsername" resultType="User" >    /*检查用户名是否有效*/
+        SELECT
+        <include refid="baseColumn"/>
+        FROM mmall_user WHERE username=#{username}
+    </select>
+
+    <select id="findUserByEmail" resultType="User">    /*检查邮箱是否有效*/
+        SELECT
+        <include refid="baseColumn"/>
+        FROM mmall_user WHERE email=#{email}
+    </select>
+
+    <select id="findQuestionByUserName" resultType="String">    /*忘记密码*/
+        SELECT question FROM mmall_user WHERE username=#{username}
+    </select>
+
+    <select id="submitAnswer" resultType="User">    /*提交问题答案*/
+        SELECT
+        <include refid="baseColumn"/>
+        FROM mmall_user WHERE username=#{username} and question=#{question}
+    </select>
+
+    <update id="forgetResetPassword">    /*忘记密码的重设密码*/
+        UPDATE mmall_user SET password=#{password} WHERE username=#{username}
+    </update>
+
+    <update id="resetPassword">    /*登录状态重置密码*/
+        UPDATE mmall_user SET password=#{password} WHERE id=#{id}
+    </update>
+
+    <update id="updateInformation">  /*登录状态更新个人信息*/
+        UPDATE mmall_user SET email=#{email},phone=#{phone},question=#{question},answer=#{answer} WHERE id=#{id}
+    </update>
+
+    <sql id="baseColumn">
+        id,username,password,email,phone,question,answer,role,create_time,update_time
+    </sql>
+</mapper>

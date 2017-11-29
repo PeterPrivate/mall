@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmall.dao.CartDao">
+
+    <sql id="Base_column">
+        id,user_id,product_id,quantity,checked,create_time,update_time
+    </sql>
+<!--查看当前用户的购物车信息-->
+    <select id="findCartList" resultType="Cart" parameterType="int">
+        select
+            <include refid="Base_column"/>
+        from mmall_cart where user_id=#{userId}
+    </select>
+    <!--添加一个购物车信息-->
+    <insert id="saveOne" parameterType="Cart">
+        insert into mmall_cart (user_id, product_id, quantity,create_time)VALUE
+            (#{userId},#{productId},#{quantity},now())
+    </insert>
+    <!--修改购物车商品数量-->
+    <update id="updateOne"  parameterType="Cart">
+        UPDATE mmall_cart SET quantity=#{quantity},update_time=now() WHERE product_id=#{productId} AND user_id=#{userId}
+    </update>
+    <!--查找一个购物车的商品信息-->
+    <select id="findOne"  resultType="Cart" parameterType="Cart">
+        select
+            <include refid="Base_column"/>
+        from mmall_cart where product_id=#{productId} and user_id=#{userId}
+    </select>
+    <!--修改购物车单个商品为选中状态-->
+    <update id="updateCheckYes" parameterType="Cart" >
+        update mmall_cart set checked=1 where product_id=#{productId} and user_id=#{userId}
+    </update>
+    <!--修改购物车单个商品为未选中状态-->
+    <update id="updateCheckNo" parameterType="Cart" >
+        update mmall_cart set checked=0 where product_id=#{productId} and user_id=#{userId}
+    </update>
+    <!--删除商品-->
+    <delete id="deleteCartProduct">
+        delete FROM mmall_cart where user_id=#{cart.userId}
+        <if test="productIds!=null">
+            and product_id IN
+            <foreach collection="productIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+    <!--修改购物车所有商品为选中状态-->
+    <update id="selectAllYes" >
+        UPDATE mmall_cart set checked=1 where user_id=#{userId}
+    </update>
+    <!--修改购物车所有商品为未选中状态-->
+    <update id="selectAllNo" >
+        UPDATE mmall_cart set checked=0 where user_id=#{userId}
+    </update>
+    <!--获取用户购物车里的商品数量-->
+    <select id="cartCount" parameterType="Cart" resultType="int">
+        select count(*) FROM mmall_cart where user_id=#{cart.userId}
+    </select>
+
+    <select id="selectAllChecked" resultType="Cart">
+    select
+    <include refid="Base_column"/>
+    from mmall_cart where user_id=#{userId} and checked = 1
+    </select>
+
+    <delete id="deleteAfterOrder" >
+        delete from mmall_cart where user_id=#{userId} and checked = 1
+    </delete>
+
+</mapper>

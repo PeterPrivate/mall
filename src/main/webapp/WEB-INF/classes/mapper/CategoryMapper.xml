@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmall.dao.CategoryDao">
+    <select id="findCategoryByCategoryId" resultType="Category">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM mmall_category WHERE id=#{id}
+    </select>
+
+    <insert id="addCategory">
+        INSERT INTO mmall_category(parent_id,name,create_time,update_time) VALUES (#{parentId},#{name},now(),now())
+    </insert>
+
+    <update id="setCategoryName">
+        UPDATE mmall_category SET name=#{name} WHERE id=#{id}
+    </update>
+
+    <select id="getDeepCategory" resultType="Category">
+        SELECT id FROM mmall_category WHERE parent_id=#{parentId}
+    </select>
+
+    <sql id="baseColumn">
+        id,parent_id,name,status,sort_order,create_time,update_time
+    </sql>
+</mapper>

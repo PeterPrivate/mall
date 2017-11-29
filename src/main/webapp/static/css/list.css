@@ -1,0 +1,224 @@
+/*
+* @Author: Administrator
+* @Date:   2017-06-08 09:52:11
+* @Last Modified by:   Administrator
+* @Last Modified time: 2017-06-08 10:17:34
+*/
+.nav{
+	background: #eee;
+	height: 30px;
+	line-height: 30px;
+}
+.nav .user{
+	float: left;
+}
+.nav .user.login{
+	display: none;
+}
+.nav .user .link{
+	margin-right: 5px;
+}
+.nav .nav-list{
+	float: right;
+}
+.nav .nav-list .nav-item{
+	display: inline-block;
+	margin-left: 5px;
+}
+/*
+* @Author: Administrator
+* @Date:   2017-06-09 08:28:05
+* @Last Modified by:   Administrator
+* @Last Modified time: 2017-06-11 16:36:10
+*/
+/* 通用头部导航*/
+.header .logo{
+	position: absolute;
+	left: 60px;
+	top: 34px;
+	display: block;
+	font-size: 36px;
+	font-weight: bold;
+	color: #c60023;
+}
+.header .search-con{
+	padding: 40px 0 30px 250px;
+}
+.header .search-con .search-input{
+	width: 550px;
+	height: 40px;
+	line-height: 40px;
+	padding-left: 10px;
+	font-size: 15px;
+	border: 2px solid #c60023;
+	outline: none;
+}
+.header .search-con .search-btn{
+	position: absolute;
+	height: 44px;
+	width: 100px;
+
+}
+/*面包屑导航*/
+.crumb{
+	margin-bottom: 15px;
+	height: 50px;
+	line-height: 50px;
+	background: #eee;
+	color: #888;
+	font-size: 14px;
+	border-top: 2px solid #c60023;
+
+}/*
+* @Author: Administrator
+* @Date:   2017-06-09 09:46:55
+* @Last Modified by:   Administrator
+* @Last Modified time: 2017-06-09 10:20:42
+*/
+/*导航主体*/
+.nav-side{
+	float: left;
+	width: 130px;
+	min-height: 100px;
+}
+.nav-side .nav-item{
+	line-height: 25px;
+	font-size: 13px;
+}
+.nav-side .nav-item .link{
+	color: #888;
+}
+.nav-side .nav-item.active .link{
+	color: #c60023;
+}
+.content.with-nav{
+	float: left;
+	width: 950px;
+}/*
+* @Author: halfgod
+* @Date:   2017-06-14 08:35:12
+* @Last Modified by:   halfgod
+* @Last Modified time: 2017-06-14 21:58:14
+*/
+/*排序*/
+.sort-con{
+  overflow: auto;
+}
+.sort-con .sort-item{
+	float: left;
+	display: inline-block;
+	position: relative;
+	padding: 0 8px;
+	height: 24px;
+	line-height: 24px;
+	border:1px solid #ccc;
+	margin-right: -1px;
+	background: #fff;
+	color: #333;
+	cursor: pointer;
+}
+.sort-con .sort-item.active{
+	background: #c60023;
+	border: 1px solid #c60023;
+	color: #fff;
+}
+.sort-con .sort-item .fa-sort-desc{
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+.sort-con .sort-item.asc .fa-sort-desc{
+	opacity: .6;
+}.sort-con .sort-item.desc .fa-sort-asc{
+	opacity: .6;
+}
+/*list*/
+.p-list-con{
+	margin-top: 15px;
+	margin-right: -20px;
+	overflow: hidden;
+}
+.p-list-con .p-item{
+	position: relative;
+	width: 180px;
+	float: left;
+	padding: 10px;
+	margin: 0 20px 20px 0;
+	background: #fff;
+
+}
+.p-list-con .p-item .p-img-con{
+	width: 180px;
+	height: 200px;
+
+}
+.p-list-con .p-item .p-img-con .p-img{
+	width: 100%;
+	height: 100%;
+}
+.p-list-con .p-item .p-price-con{
+	height: 30px;
+	line-height: 30px;
+}
+.p-list-con .p-item .p-price-con .p-price{
+	font-size: 16px;
+	color: #e7380d;
+}
+.p-list-con .p-item .p-name-con{
+	height: 40px;
+	overflow: hidden;
+}
+.p-list-con .p-item .p-name-con .p-name{
+	line-height: 20px;
+	margin-bottom: 10px;
+	color: #666;
+	text-decoration: none;
+}
+.err-tip{
+	padding: 0 10px;
+	height: 60px;
+	line-height: 60px;
+	color: #f60;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	background: #eee;
+}/*
+* @Author: halfgod
+* @Date:   2017-06-14 12:56:32
+* @Last Modified by:   halfgod
+* @Last Modified time: 2017-06-14 14:36:22
+*/
+.pg-content{
+	text-align: center;
+	color: #333;
+}
+.pg-content .pg-item{
+	display: inline-block;
+	height: 36px;
+	line-height: 36px;
+	padding : 0 15px;
+	margin: 0 2px;
+	border: 1px solid #ccc;
+	background: #eee;
+	cursor: pointer;
+	-moz-user-select :none;
+	-webkit-user-select :none;
+	-ms-user-select :none;
+	user-select:none;
+}
+.pg-content .pg-item.disabled{
+	color: #ccc;
+	background: none;
+	cursor: auto;
+}
+.pg-content .pg-total{
+	margin-left: 10px;
+	background: none;
+	cursor: auto;
+}
+.pg-content .pg-item.active{
+	border:1px solid #f6f6f6;
+	background: none;
+	cursor: auto;
+}

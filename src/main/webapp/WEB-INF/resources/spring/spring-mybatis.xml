@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${db.master.url}"/>
+        <property name="username" value="${db.master.user}"/>
+        <property name="password" value="${db.master.password}"/>
+    </bean>
+
+
+    <!-- ==========================Spring整合Mybatis================================= -->
+    <!-- 配置SqlSessionFactoryBean：用来创建SqlSessionFacotry,并且扫描xml文件 -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFacotry">
+        <!--注入数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置别名，如果在下面的mybatis配置文件中有配置别名，那么这句可以不用 -->
+         <property name="typeAliasesPackage" value="com.mmall.entity"/>
+        <!--加载mybatis配置文件 -->
+        <property name="configLocation" value="classpath:spring/mybatis-config.xml"/>
+        <!-- 扫描mapper.xml -->
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+    </bean>
+
+    <!-- 配置MapperScannerConfigurer：用来扫描mapper接口，创建mapper接口实现类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描mapper接口 -->
+        <property name="basePackage" value="com.mmall.dao" />
+        <!--注入sqlSessionFacotry -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFacotry"/>
+    </bean>
+    <!-- ==========================Spring整合Mybatis================================= -->
+
+
+    <!-- ================================事务管理===================================== -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 事务注解 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 注意：如果使用注解管理事务，那么下面的属性和切面可以不配置-->
+
+    <!-- 事务管理 属性 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="select*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 配置切面 -->
+    <aop:config>
+        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.mmall.service..*.*(..))"/>
+    </aop:config>
+    <!-- ================================事务管理===================================== -->
+
+</beans>

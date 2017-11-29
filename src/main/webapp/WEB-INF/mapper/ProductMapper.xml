@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmall.dao.ProductDao">
+
+
+    <sql id="base_column">
+        id,category_id,name,subtitle,main_image,sub_images,detail,price,stock,
+        status,create_time,update_time
+    </sql>
+
+    <select id="findList" resultType="Product">
+        SELECT
+            <include refid="base_column"/>
+        FROM mmall_product
+    </select>
+
+    <select id="selectProductById" resultType="Product">
+        SELECT
+        <include refid="base_column"/>
+        FROM mmall_product
+        WHERE id = #{value}
+    </select>
+
+    <update id="updateOne" parameterType="Product">
+        update mmall_product
+        <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+            <if test="categoryId!=null">
+                category_id=#{categoryId},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="subImages!=null">
+                sub_images=#{subImages},
+            </if>
+            <if test="subtitle!=null">
+                subtitle=#{subtitle},
+            </if>
+            <if test="detail!=null">
+                detail=#{detail},
+            </if>
+            <if test="price!=null">
+                price=#{price},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+        </trim>
+    </update>
+
+    <select id="search" resultType="Product">
+        SELECT
+        <include refid="base_column"/>
+        FROM mmall_product
+        <trim prefix="where" suffixOverrides="and">
+              <if test="id!=null">
+                  id=#{id} AND
+              </if>
+            <if test="name!=null">
+                name like concat("%",#{name},"%")
+            </if>
+        </trim>
+    </select>
+
+    <insert id="saveOne" parameterType="Product">
+        insert into mmall_product(id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, create_time)
+                VALUE (#{id},#{categoryId},#{name},#{subtitle},#{mainImage},#{subImages},#{detail},#{price},#{stock},#{status},now())
+    </insert>
+
+
+    <update id="setSaleStatus" parameterType="Product">
+        update mmall_product SET status=#{status} where id = #{id}
+    </update>
+
+
+    <select id="list" resultType="Product">
+        SELECT
+        <include refid="base_column"/>
+        FROM mmall_product
+        <trim prefix="where"  suffixOverrides="and">
+            <if test="product.categoryId!=null">
+                category_id=#{product.categoryId} and
+            </if>
+            <if test="product.name!=null">
+                name like concat("%",#{product.name},"%") and
+            </if>
+        </trim>
+
+    </select>
+</mapper>
